@@ -23,6 +23,7 @@
         python312Packages.venvShellHook
         python312Packages.pip
         python312Packages.pyqt6
+        python311Packages.ruff
       ];
         
     };
