@@ -17,7 +17,7 @@ from modules.custom_dataset import IntrusionDataset
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-
+from sklearn.metrics import classification_report
 
 class Comparator:
     def __init__(self, data_dir, save_dir, n_feature_selected):
@@ -146,9 +146,7 @@ class Comparator:
         model_RF.fit(x_train, np.ravel(y_train.values))
         y_pred = model_RF.predict(x_test)
         self._logger.info("Starting RandomForestClassifier test")
-        self._score_model("RFC",
-                          y_real=y_test,
-                          y_pred=y_pred)
+        self._logger.info(f"\n{classification_report(y_test, y_pred)}")
         return None
 
     def _test_CNN(self):
@@ -207,9 +205,7 @@ class Comparator:
                     all_preds.extend(preds)
                     all_targets.extend(y_batch.numpy())
 
-        self._score_model("CNN",
-                          y_real=all_preds,
-                          y_pred=all_targets)
+        self._logger.info(f"\n{classification_report(all_targets, all_preds)}")
 
         return None
 
@@ -217,7 +213,6 @@ class Comparator:
         self._prepare_data()
         self._test_RFC()
         self._test_CNN()
-        self._logger.info(f"\n{self._score}")
         pass
 
 
