@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 import joblib
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
-from sklearn.metrics import r2_score
+from sklearn.metrics import f1_score
 from modules.cnn_model import Cnnid
 from modules.custom_dataset import IntrusionDataset
 import torch
@@ -132,8 +132,8 @@ class Comparator:
 
     def _score_model(self, model_type, y_real, y_pred):
         acc = accuracy_score(y_real, y_pred)
-        r2 = r2_score(y_real, y_pred)
-        scores_info = {model_type: {"Acc": acc, "R2": r2}}
+        f1 = f1_score(y_real, y_pred)
+        scores_info = {model_type: {"Acc": acc, "F1": f1}}
         self._logger.info(f"Scoring {model_type} Done")
         self._score.update(scores_info)
         return None
@@ -226,5 +226,5 @@ if __name__ == "__main__":
     save_dir = "save"
     comparer = Comparator(data_dir=data_dir,
                           save_dir=save_dir,
-                          n_feature_selected=5)
+                          n_feature_selected=7)
     comparer.start_comparing()
